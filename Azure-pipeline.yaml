@@ -21,11 +21,18 @@ stages:
           vmImage: 'ubuntu-latest'
         steps:
         - task: Maven@3
-          displayName: 'Maven pom.xml'
           inputs:
-            mavenPomFile: '$(Parameters.mavenPOMFile)'
+            mavenPomFile: 'pom.xml'
+            goals: 'install'
+            publishJUnitResults: false
+            javaHomeOption: 'JDKVersion'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+            sonarQubeRunAnalysis: false
         - task: Docker@2
-          displayName: buildAndPush
           inputs:
-            containerRegistry: Dockerhub
-            Dockerfile: Dockerfile
+            containerRegistry: 'Dockerhub'
+            repository: 'soumyabhoj/Test'
+            command: 'buildAndPush'
+            Dockerfile: 'Dockerfile'
